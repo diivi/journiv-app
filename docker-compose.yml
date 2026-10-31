@@ -20,7 +20,11 @@ x-base-env: &base-env
   ALLOW_INSECURE_COOKIE_AUTH_OVER_HTTP: ${ALLOW_INSECURE_COOKIE_AUTH_OVER_HTTP:-false}
 
 x-celery-common: &celery-common
-  image: swalabtech/journiv-app:${APP_VERSION:-latest}
+  # self-host: built from this fork (journiv PR #702, entry templates) until it is merged upstream
+  image: journiv-local:entry-templates
+  build:
+    context: .
+  pull_policy: build
   env_file: .env
   volumes:
     - ./data:/data
@@ -46,7 +50,11 @@ x-celery-common: &celery-common
         memory: 256m
 
 x-app-common: &app-common
-  image: swalabtech/journiv-app:${APP_VERSION:-latest}
+  # self-host: built from this fork (journiv PR #702, entry templates) until it is merged upstream
+  image: journiv-local:entry-templates
+  build:
+    context: .
+  pull_policy: build
   env_file: .env
   volumes:
     - ./data:/data
