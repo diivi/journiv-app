@@ -14,7 +14,7 @@ x-base-env: &base-env
   CELERY_BROKER_URL: redis://valkey:6379/0
   CELERY_RESULT_BACKEND: redis://valkey:6379/0
   DB_DRIVER: postgres
-  POSTGRES_HOST: postgres
+  POSTGRES_HOST: journiv-db  # unique alias: plain 'postgres' also matches Coolify's own DB on the shared network
   ENVIRONMENT: production
   # Production stays fail-closed unless a trusted-LAN operator explicitly opts in.
   ALLOW_INSECURE_COOKIE_AUTH_OVER_HTTP: ${ALLOW_INSECURE_COOKIE_AUTH_OVER_HTTP:-false}
@@ -89,7 +89,9 @@ services:
     volumes:
       - ./data/postgres:/var/lib/postgresql
     networks:
-      - backend
+      backend:
+        aliases:
+          - journiv-db
     restart: unless-stopped
     deploy:
       resources:
